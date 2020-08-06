@@ -9,7 +9,7 @@ export default function ButtonBadge(props) {
       type={props.type}
       onClick={props.click}
     >
-      {props.children}:{props.counter > 99 ? 99 + "+" : props.counter}
+      {props.children}{props.counter?" : ":""}{props.counter > 99 ? 99 + "+" : props.counter}
     </button>
   );
 }

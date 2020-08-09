@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
-import { createPortal } from "react-dom";
-
-export default function Modal(props) {
+import{createPortal} from 'react-dom'
+const Modal =  React.forwardRef((props, ref) => {
   const modalRoot = document.getElementById("modal");
   const el = document.createElement("div");
 
   useEffect(() => {
     modalRoot.appendChild(el);
+    ref.current.focus()
   });
 
   useEffect(() => {
     return () => modalRoot.removeChild(el);
   });
+
 
   const modalStructure = (
     <div className="modal">
@@ -21,5 +22,7 @@ export default function Modal(props) {
     </div>
   );
   return createPortal(modalStructure, el);
-}
- 
+})
+
+
+export default Modal;

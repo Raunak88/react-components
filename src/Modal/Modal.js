@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import "./Modal.scss";
 const Modal = (props) => {
@@ -18,13 +18,28 @@ const Modal = (props) => {
     setOpen(!open);
   };
 
+  const KeyDown = (event) => {
+    console.log("pressed");
+
+    if (event.keyCode === 27) {
+      handleClose();
+    }
+  };
+
+  var modal = useRef(null);
+
+  const onClickOutside = (event) => {
+    if (modal.current && modal.current.contains(event.target)) return;
+    handleClose();
+  };
+
   const modalStructure = (
-    <>
+    <div onKeyDown={(e) => KeyDown(e)} onClick={onClickOutside}>
       {open ? (
-        <div className="cover">
-          <div className="modal-area">
+        <div className="cover" >
+          <div className="modal-area" ref={modal}>
             <div className="modal-content">
-              hi
+              {props.modalContent}
               <button className="primary" onClick={handleClose}>
                 Close Modal
               </button>
@@ -38,7 +53,7 @@ const Modal = (props) => {
       <button className="primary" onClick={handleClose}>
         Open Modal
       </button>
-    </>
+    </div>
   );
 
   return createPortal(modalStructure, document.body);

@@ -1,6 +1,12 @@
-.split-window {
+.split-window-horizontal {
   display: flex;
   flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+.split-window-vertical {
+  display: flex;
+  flex-direction: row;
   width: 100vw;
   height: 100vh;
 }
@@ -11,7 +17,7 @@
   overflow: hidden;
 }
 
-.top- {
+.top-window {
     
 }
 .bottom-window {

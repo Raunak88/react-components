@@ -29,7 +29,9 @@ export default function SplitWindow(props) {
       leftRef.current.style.flex = "none";
       return;
     }
-    leftRef.current.style.height = `${leftWidth}px`;
+    if (props.orientation === "vertical") {
+      leftRef.current.style.width = `${leftWidth}px`;
+    }
   }, [leftWidth]);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function SplitWindow(props) {
       : (separatorXPosition.current = null);
   };
   const onMouseMove = (e) => {
-    if (!separatorYPosition.current || !separatorXPosition.current) {
+    if (!separatorYPosition.current && !separatorXPosition.current) {
       return;
     }
     if (props.orientation === "horizontal") {
@@ -63,13 +65,13 @@ export default function SplitWindow(props) {
         ? mainWindow.current.clientHeight
         : "";
       setTopHeight(newTopHeight);
-    } else {
+    } else if (props.orientation === "vertical") {
       const newLeftWidth = leftWidth + e.clientX - separatorXPosition.current;
       separatorXPosition.current = e.clientX;
       const splitPaneWidth = mainWindow.current
         ? mainWindow.current.clientWidth
         : "";
-      setTopHeight(newLeftWidth);
+      setLeftWidth(newLeftWidth);
     }
   };
 
@@ -83,13 +85,20 @@ export default function SplitWindow(props) {
       ref={mainWindow}
     >
       <div
-        className="top-window"
+        className="first-window"
         ref={props.orientation === "vertical" ? leftRef : topRef}
       >
-        {props.topWindow}
+        {props.firstWindow}
       </div>
-      <div className="separator" onMouseDown={onMouseDown}></div>
-      <div className="bottom-window">{props.bottomWindow}</div>
+      <div
+        className={
+          props.orientation === "vertical"
+            ? "separator-vertical"
+            : "separator-horizontal"
+        }
+        onMouseDown={onMouseDown}
+      ></div>
+      <div className="second-window">{props.secondWindow}</div>
     </div>
   );
 }
